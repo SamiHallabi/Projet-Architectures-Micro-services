@@ -2,6 +2,8 @@ package com.hallabi.customerservice.service;
 
 import com.hallabi.customerservice.entities.Customer;
 import com.hallabi.customerservice.repository.CustomerRepository;
+import org.springframework.ai.mcp.annotation.McpTool;
+import org.springframework.ai.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,16 +21,19 @@ public class CustomerService {
         return customerRepository;
     }
 
+    @McpTool(description = "Get all customers")
     public List<Customer> GetAllCustomers() {
         return customerRepository.findAll();
     }
 
-    public Customer FindCustomerById(Long id) {
+    @McpTool(description = "Find customer by ID")
+    public Customer FindCustomerById(@McpToolParam(description = "The customer id") Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("Customer not found"));
     }
 
-    public Customer SaveCustomer(Customer customer) {
+    @McpTool(description = "Save a new customer")
+    public Customer SaveCustomer(@McpToolParam(description = "The customer to save (name,email)") Customer customer) {
         return customerRepository.save(customer);
     }
 
